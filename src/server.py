@@ -28,12 +28,6 @@ def error_response_on_exception(func):
     return wrapper
 
 
-@app.route("/api/exception", methods=["GET"])
-@error_response_on_exception
-def exception_test():
-    raise TwPlayerException("Exception test")
-
-
 @app.route("/api/search", methods=["GET"])
 @error_response_on_exception
 def search():
