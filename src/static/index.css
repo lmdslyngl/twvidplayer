@@ -1,0 +1,61 @@
+
+html {
+  width: 100%;
+}
+
+body {
+  width: 100%;
+  margin: 20px 0 0 0;
+}
+
+.app-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+#app {
+  width: 640px;
+}
+
+.searchbox {
+  display: grid;
+  grid-template-columns: 1fr 150px;
+  margin: 0 0 20px 0;
+}
+
+.vid {
+  display: flex;
+  justify-content: center;
+  height: 400px;
+  margin: 0 0 20px 0;
+}
+
+.vid video {
+  height: 100%;
+}
+
+.control {
+  display: grid;
+  grid-template-columns: 150px 1fr 150px;
+  margin: 0 0 20px 0;
+}
+
+.tweet-card-grid {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  justify-content: center;
+}
+
+.tweet-card-grid p {
+  margin: 0 0 5px 0;
+}
+
+.tweet-card-grid .author {
+  font-weight: bold;
+}
+
+.tweet-card-thumbnail {
+  text-align: center;
+}
+

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.4.6/dist/css/uikit.min.css" />
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+
+    <div class="app-wrapper">
+      <div id="app">
+        <searchbox
+          v-on:on-search-clicked="onSearchClicked">
+        </searchbox>
+
+        <player
+          v-bind:url="videoUrl"
+          v-bind:video-type="videoType"
+          v-on:ended="onMusicEnded">
+        </player>
+
+        <pager
+          v-on:on-next-clicked="onNextClicked"
+          v-on:on-prev-clicked="onPrevClicked">
+        </pager>
+
+        <tweet
+          v-bind:text="tweetText"
+          v-bind:author="tweetAuthor"
+          v-bind:author-screen-name="tweetAuthorScreenName"
+          v-bind:author-thumbnail-url="tweetAuthorThumbnailUrl">
+        </tweet>
+
+      </div> <!-- end of app -->
+    </div> <!-- end of app-wrapper -->
+
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.4.6/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.4.6/dist/js/uikit-icons.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://w.soundcloud.com/player/api.js"></script>
+    <script src="playlist.js"></script>
+    <script src="index.js"></script>
+    <script>
+      // YouTube iframe api
+      let tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      let firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    </script>
+  </body>
+</html>

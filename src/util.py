@@ -1,0 +1,3 @@
+
+class TwPlayerException(Exception):
+    pass
