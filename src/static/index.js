@@ -276,7 +276,7 @@ var app = new Vue({
         .then(() => {
           let tweet = this.playlist.current();
           this.setFromTweet(tweet);
-        });
+        }).catch(this.catchAPICallback);
     },
     onNextClicked: function() {
       this.playlist.next()
@@ -286,7 +286,7 @@ var app = new Vue({
             return;
           }
           this.setFromTweet(response);
-        });
+        }).catch(this.catchAPICallback);
     },
     onPrevClicked: function() {
       this.playlist.prev()
@@ -296,7 +296,7 @@ var app = new Vue({
             return;
           }
           this.setFromTweet(response);
-        });
+        }).catch(this.catchAPICallback);
     },
     onMusicEnded: function() {
       this.playlist.next()
@@ -306,7 +306,7 @@ var app = new Vue({
             return;
           }
           this.setFromTweet(response);
-        });
+        }).catch(this.catchAPICallback);
     },
     setFromTweet(tweet) {
       this.tweetText = tweet["text"];
@@ -315,6 +315,24 @@ var app = new Vue({
       this.tweetAuthorThumbnailUrl = tweet["author_thumbnail"];
       this.videoUrl = tweet["video_url"];
       this.videoType = tweet["video_type"];
+    },
+    catchAPICallback: function(error) {
+      console.log(error);
+      if( error.response ) {
+        console.log(error.response);
+        let responseData = error.response.data;
+        if( "error_type" in responseData ) {
+          if( responseData["error_type"] === "ratelimit" ) {
+            alert("Twitter検索の呼び出し回数上限に達しました．しばらく待ってから再度お試しください．");
+          } else {
+            alert(responseData["error"]);
+          }
+        } else {
+          alert(responseData);
+        }
+      } else {
+        alert(error.message);
+      }
     }
   }
 });

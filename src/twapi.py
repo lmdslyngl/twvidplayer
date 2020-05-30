@@ -11,6 +11,10 @@ class TwAPIException(Exception):
     pass
 
 
+class TwAPIRateLimited(Exception):
+    pass
+
+
 @lru_cache(maxsize=1)
 def __create_auth() -> requests_oauthlib.OAuth1:
     with open("token.json", "r") as f:
@@ -41,7 +45,9 @@ def search(
 
     r = requests.get(url, params=params, auth=__create_auth())
 
-    if r.status_code != 200:
+    if r.status_code == 429:
+        raise TwAPIRateLimited(r.text)
+    elif r.status_code != 200:
         raise TwAPIException(r.text)
 
     return r.json()

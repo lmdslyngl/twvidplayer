@@ -20,10 +20,21 @@ def error_response_on_exception(func):
     def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)
+        except twapi.TwAPIRateLimited as ex:
+            traceback.print_exc()
+            return Response(
+                json.dumps({
+                    "error": "Too many requests. Rate limited.",
+                    "error_type": "ratelimit"
+                }),
+                status=429)
         except Exception as ex:
             traceback.print_exc()
             return Response(
-                json.dumps({"error": traceback.format_exc()}),
+                json.dumps({
+                    "error": "Type: {}\nError: {}".format(type(ex), str(ex)),
+                    "error_type": "other"
+                }),
                 status=500)
     return wrapper
 

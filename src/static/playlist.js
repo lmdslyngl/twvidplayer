@@ -9,7 +9,7 @@ class Playlist {
   setSearchText(q) {
     this.q = q;
     this.currentIndex = 0;
-    return this._search(q)
+    return API.search(q)
       .then((response) => {
         this.playlist = response;
         return Promise.resolve(this.playlist);
@@ -26,7 +26,7 @@ class Playlist {
       // 次のをツイートを検索する
 
       let maxId = this.playlist[this.playlist.length - 1]["id"];
-      return this._search(this.q, maxId)
+      return API.search(this.q, maxId)
         .then((response) => {
           if( 0 < response.length ) {
             this.playlist = this.playlist.concat(response);
@@ -51,7 +51,7 @@ class Playlist {
       // 新しいツイートを検索する
 
       let sinceId = this.playlist[0]["id"];
-      return this._search_newer(this.q, sinceId)
+      return API.search_newer(this.q, sinceId)
         .then((response) => {
           if( 0 < response.length ) {
             this.playlist = response.concat(this.playlist);
@@ -68,36 +68,6 @@ class Playlist {
       return Promise.resolve(this.playlist[this.currentIndex]);
     }
 
-  }
-
-  _search(q, maxId = -1) {
-    let queryParams = { "q": q };
-    if( maxId !== -1 ) {
-      queryParams["max_id"] = maxId;
-    }
-    return axios.get("http://localhost:5000/api/search", { params: queryParams })
-      .then((response) => {
-        if( response.status === 200 ) {
-          return Promise.resolve(response.data);
-        } else {
-          return Promise.reject(response.data);
-        }
-      });
-  }
-
-  _search_newer(q, sinceId) {
-    let queryParams = { "q": q };
-    if( sinceId !== -1 ) {
-      queryParams["since_id"] = sinceId;
-    }
-    return axios.get("http://localhost:5000/api/search-newer", { params: queryParams })
-      .then((response) => {
-        if( response.status === 200 ) {
-          return Promise.resolve(response.data);
-        } else {
-          return Promise.reject(response.data);
-        }
-      });
   }
 
 }
