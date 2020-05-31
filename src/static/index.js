@@ -27,7 +27,7 @@ Vue.component("searchbox", {
             type="search"
             placeholder="Twitterで検索..."
             v-model="searchText"
-            v-on:keyup.enter="onSearchClicked">
+            v-on:keydown.enter="onSearchClicked">
       </div>
       <button
           class="uk-button uk-button-primary"
