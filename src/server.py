@@ -5,7 +5,7 @@ from functools import wraps
 import traceback
 import re
 
-from flask import Flask, request, Response
+from flask import Flask, request, Response, send_from_directory
 import twapi
 from util import TwPlayerException, get_logger, init_logger
 
@@ -62,6 +62,11 @@ def search():
             max_id = search_result["search_metadata"]["max_id"] - 1
 
     return "[]"
+
+
+@app.route("/", methods=["GET"])
+def index():
+    return send_from_directory("static", "index.html")
 
 
 @app.route("/api/search-newer", methods=["GET"])
