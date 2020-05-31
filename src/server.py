@@ -86,6 +86,10 @@ def search_prev():
 def extract_video_tweets(twapi_search_response: dict) -> dict:
     response_tweets = []
     for tweet in twapi_search_response["statuses"]:
+        if "retweeted_status" in tweet:
+            # リツイートは除外
+            continue
+
         video_url_candidates = [
             get_video_url_from_tweet(tweet),
             get_soundcloud_url_from_tweet(tweet),
