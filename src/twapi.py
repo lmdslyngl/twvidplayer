@@ -9,7 +9,7 @@ from base64 import b64encode
 import requests
 import requests_oauthlib
 
-from util import get_logger
+from util import get_logger, load_config
 
 
 class TwAPIException(Exception):
@@ -68,26 +68,10 @@ class RateLimitWrapper:
 
 
 @lru_cache(maxsize=1)
-def __load_token() -> dict:
-    with open("token.json", "r") as f:
-        return json.load(f)
-
-
-@lru_cache(maxsize=1)
-def __create_auth() -> requests_oauthlib.OAuth1:
-    token = __load_token()
-    return requests_oauthlib.OAuth1(
-        token["api_key"],
-        token["api_key_secret"],
-        token["access_token"],
-        token["access_token_secret"])
-
-
-@lru_cache(maxsize=1)
 def __get_token() -> str:
     get_logger().info("__get_token is called.")
 
-    token = __load_token()
+    token = load_config()
     encoded_key = b64encode(
         (token["api_key"] + ":" + token["api_key_secret"]).encode("ascii")).decode("ascii")
 
