@@ -130,7 +130,13 @@ def search(
     elif r.status_code != 200:
         raise TwAPIException(r.text)
 
-    return r.json()
+    search_result = r.json()
+
+    msg = "API called: search, q={}, since_id={}, max_id={}, result_count={}".format(
+        q, since_id, max_id, len(search_result["statuses"]))
+    get_logger().info(msg)
+
+    return search_result
 
 
 def main():
