@@ -3,6 +3,7 @@
   <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.4.6/dist/css/uikit.min.css" />
     <link rel="stylesheet" href="/static/index.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>twtlplayer</title>
   </head>
   <body>
@@ -15,7 +16,7 @@
 
         <div
             v-show="tweetText === ''"
-            class="uk-card uk-card-default uk-card-body">
+            class="uk-card uk-card-default uk-card-body card">
           <h3>検索結果がありません．</h3>
           <p>検索キーワードを入力してSEARCHしてみましょう．</p>
         </div>

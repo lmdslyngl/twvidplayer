@@ -85,11 +85,15 @@ Vue.component("player-soundcloud", {
         });
     },
     fetchIFrameHtml: function(url) {
+      let vidElem = document.getElementsByClassName("vid")[0];
+      let vidHeight = vidElem.clientHeight;
+
       return axios.get("https://soundcloud.com/oembed", {
         params: {
           format: "json",
           url: url,
-          maxheight: "400"
+          maxheight: vidHeight,
+          auto_play: "true"
         }
       }).then((response) => {
         return Promise.resolve(response.data["html"]);
@@ -138,9 +142,13 @@ Vue.component("player-youtube", {
   methods: {
     updateYoutubeIFrame: function() {
       if( this.player === null ) {
+        let vidElem = document.getElementsByClassName("vid")[0];
+        let vidWidth = vidElem.clientWidth;
+        let vidHeight = vidElem.clientHeight;
+
         this.player = new YT.Player("player-youtube", {
-          height: "400",
-          width: "640",
+          height: vidHeight,
+          width: vidWidth,
           videoId: this.videoId,
           events: {
             "onReady": this.onPlayable,
@@ -251,7 +259,7 @@ Vue.component("tweet", {
   },
   template: `
     <div class="tweet">
-      <div class="uk-card uk-card-default uk-card-body uk-width-1-1">
+      <div class="uk-card uk-card-default uk-card-body uk-width-1-1 card">
         <div class="tweet-card-grid">
           <div class="tweet-card-thumbnail">
             <img v-bind:src="authorThumbnailUrl">

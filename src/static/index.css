@@ -5,7 +5,11 @@ html {
 
 body {
   width: 100%;
-  margin: 20px 0 20px 0;
+  padding: 20px 0 20px 0;
+}
+
+.card {
+  padding: 15px;
 }
 
 .app-wrapper {
@@ -16,6 +20,7 @@ body {
 
 #app {
   width: 640px;
+  padding: 0 10px 0 10px;
 }
 
 .searchbox {
@@ -24,11 +29,21 @@ body {
   margin: 0 0 20px 0;
 }
 
-.vid {
-  display: flex;
-  justify-content: center;
-  height: 400px;
-  margin: 0 0 20px 0;
+@media screen and (max-width: 640px) {
+  .vid {
+    display: flex;
+    justify-content: center;
+    height: 300px;
+    margin: 0 0 20px 0;
+  }
+}
+@media screen and (min-width: 640px) {
+  .vid {
+    display: flex;
+    justify-content: center;
+    height: 400px;
+    margin: 0 0 20px 0;
+  }
 }
 
 .vid video {
@@ -43,7 +58,7 @@ body {
 
 .tweet-card-grid {
   display: grid;
-  grid-template-columns: 60px 1fr;
+  grid-template-columns: 55px 1fr;
   justify-content: center;
 }
 
@@ -56,6 +71,5 @@ body {
 }
 
 .tweet-card-thumbnail {
-  text-align: center;
+  text-align: left;
 }
-
