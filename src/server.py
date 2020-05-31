@@ -53,7 +53,7 @@ def search():
     else:
         max_id = None
 
-    for retry_count in range(10):
+    for retry_count in range(3):
         search_result = twapi.search(q, max_id=max_id)
         video_tweets = extract_video_tweets(search_result)
         if 0 < len(video_tweets):
@@ -74,7 +74,7 @@ def search_prev():
     else:
         raise TwPlayerException("Not specified since_id.")
 
-    for retry_count in range(10):
+    for retry_count in range(3):
         search_result = twapi.search(q, since_id=since_id)
         video_tweets = extract_video_tweets(search_result)
         if 0 < len(video_tweets):
