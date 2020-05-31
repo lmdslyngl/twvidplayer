@@ -286,7 +286,14 @@ var app = new Vue({
       this.playlist.setSearchText(searchText)
         .then(() => {
           let tweet = this.playlist.current();
-          this.setFromTweet(tweet);
+          if( tweet === null ) {
+            // 何も返ってこなかったとき
+            alert(
+              "ツイートが見つかりませんでした．\n" +
+              "TwitterAPIの仕様上，1週間以上前のツイートを検索できませんのでご注意ください．");
+          } else {
+            this.setFromTweet(tweet);
+          }
         }).catch(this.catchAPICallback);
     },
     onNextClicked: function() {

@@ -17,7 +17,11 @@ class Playlist {
   }
 
   current() {
-    return this.playlist[this.currentIndex];
+    if( this.playlist.length <= this.currentIndex ) {
+      return null;
+    } else {
+      return this.playlist[this.currentIndex];
+    }
   }
 
   next() {
