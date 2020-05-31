@@ -5,9 +5,16 @@ Vue.component("searchbox", {
       searchText: ""
     };
   },
+  mounted: function() {
+    this.$nextTick(() => {
+      document.getElementById("search-text").focus();
+    });
+  },
   methods: {
     onSearchClicked: function(evt) {
-      this.$emit("on-search-clicked", this.searchText);
+      if( this.searchText !== "" ) {
+        this.$emit("on-search-clicked", this.searchText);
+      }
     }
   },
   template: `
@@ -15,6 +22,7 @@ Vue.component("searchbox", {
       <div class="uk-search uk-search-default uk-width-1-1">
         <span uk-search-icon></span>
         <input
+            id="search-text"
             class="uk-search-input"
             type="search"
             placeholder="Twitterで検索..."
@@ -232,7 +240,8 @@ Vue.component("tweet", {
     "text",
     "author",
     "authorScreenName",
-    "authorThumbnailUrl"
+    "authorThumbnailUrl",
+    "tweetUrl"
   ],
   computed: {
     textHtml: function() {
@@ -249,6 +258,7 @@ Vue.component("tweet", {
           <div>
             <p class="author">{{ author }} (@{{ authorScreenName }})</p>
             <p v-html="textHtml"></p>
+            <a v-bind:href="tweetUrl" target="_blank">Twitterで開く</a>
           </div>
         </div>
       </div>
@@ -260,6 +270,7 @@ var app = new Vue({
   el: "#app",
   data: {
     playlist: null,
+    tweetId: "",
     tweetText: "",
     tweetAuthor: "",
     tweetAuthorScreenName: "",
@@ -309,6 +320,7 @@ var app = new Vue({
         }).catch(this.catchAPICallback);
     },
     setFromTweet(tweet) {
+      this.tweetId = tweet["id"];
       this.tweetText = tweet["text"];
       this.tweetAuthor = tweet["author"];
       this.tweetAuthorScreenName = tweet["author_screen_name"];
@@ -333,6 +345,11 @@ var app = new Vue({
       } else {
         alert(error.message);
       }
+    }
+  },
+  computed: {
+    tweetUrl: function() {
+      return `https://twitter.com/${this.tweetAuthorScreenName}/status/${this.tweetId}`;
     }
   }
 });

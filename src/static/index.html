@@ -12,22 +12,33 @@
           v-on:on-search-clicked="onSearchClicked">
         </searchbox>
 
+        <div
+            v-show="tweetText === ''"
+            class="uk-card uk-card-default uk-card-body">
+          <h3>検索結果がありません．</h3>
+          <p>検索キーワードを入力してSEARCHしてみましょう．</p>
+        </div>
+
         <player
+          v-show="tweetText !== ''"
           v-bind:url="videoUrl"
           v-bind:video-type="videoType"
           v-on:ended="onMusicEnded">
         </player>
 
         <pager
+          v-show="tweetText !== ''"
           v-on:on-next-clicked="onNextClicked"
           v-on:on-prev-clicked="onPrevClicked">
         </pager>
 
         <tweet
+          v-show="tweetText !== ''"
           v-bind:text="tweetText"
           v-bind:author="tweetAuthor"
           v-bind:author-screen-name="tweetAuthorScreenName"
-          v-bind:author-thumbnail-url="tweetAuthorThumbnailUrl">
+          v-bind:author-thumbnail-url="tweetAuthorThumbnailUrl"
+          v-bind:tweet-url="tweetUrl">
         </tweet>
 
       </div> <!-- end of app -->
