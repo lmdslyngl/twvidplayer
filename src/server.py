@@ -10,6 +10,8 @@ import twapi
 from util import TwPlayerException, get_logger, init_logger
 
 
+init_logger()
+get_logger().info("Server started.")
 app = Flask(
     __name__,
     static_folder="static")
@@ -185,5 +187,4 @@ def get_youtube_url_from_tweet(tweet: dict) -> Optional[str]:
 
 
 if __name__ == "__main__":
-    init_logger()
     app.run()

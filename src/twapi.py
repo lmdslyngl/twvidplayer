@@ -4,9 +4,12 @@ import sys
 import json
 from functools import lru_cache, wraps
 from datetime import datetime
+from base64 import b64encode
 
 import requests
 import requests_oauthlib
+
+from util import get_logger
 
 
 class TwAPIException(Exception):
@@ -65,15 +68,41 @@ class RateLimitWrapper:
 
 
 @lru_cache(maxsize=1)
-def __create_auth() -> requests_oauthlib.OAuth1:
+def __load_token() -> dict:
     with open("token.json", "r") as f:
-        token = json.load(f)
+        return json.load(f)
 
+
+@lru_cache(maxsize=1)
+def __create_auth() -> requests_oauthlib.OAuth1:
+    token = __load_token()
     return requests_oauthlib.OAuth1(
         token["api_key"],
         token["api_key_secret"],
         token["access_token"],
         token["access_token_secret"])
+
+
+@lru_cache(maxsize=1)
+def __get_token() -> str:
+    get_logger().info("__get_token is called.")
+
+    token = __load_token()
+    encoded_key = b64encode(
+        (token["api_key"] + ":" + token["api_key_secret"]).encode("ascii")).decode("ascii")
+
+    url = "https://api.twitter.com/oauth2/token"
+    params = {"grant_type": "client_credentials"}
+    headers = {
+        "Authorization": "Basic " + encoded_key,
+        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+    }
+
+    r = requests.post(url, params=params, headers=headers)
+    if r.status_code != 200:
+        raise TwAPIException(r.text)
+
+    return r.json()["access_token"]
 
 
 @RateLimitWrapper.wrap("search")
@@ -84,6 +113,7 @@ def search(
         max_id: int = None) -> dict:
 
     url = "https://api.twitter.com/1.1/search/tweets.json"
+    headers = {"Authorization": "Bearer " + __get_token()}
     params = {
         "q": q,
         "count": count,
@@ -93,7 +123,7 @@ def search(
     if since_id is not None: params["since_id"] = since_id
     if max_id is not None: params["max_id"] = max_id
 
-    r = requests.get(url, params=params, auth=__create_auth())
+    r = requests.get(url, params=params, headers=headers)
 
     if r.status_code == 429:
         raise TwAPIRateLimited.create_from_response(r)
