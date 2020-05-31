@@ -26,7 +26,8 @@ Vue.component("searchbox", {
             class="uk-search-input"
             type="search"
             placeholder="Twitterで検索..."
-            v-model="searchText">
+            v-model="searchText"
+            v-on:keyup.enter="onSearchClicked">
       </div>
       <button
           class="uk-button uk-button-primary"
