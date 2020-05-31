@@ -7,7 +7,7 @@ import re
 
 from flask import Flask, request, Response
 import twapi
-from util import TwPlayerException
+from util import TwPlayerException, get_logger, init_logger
 
 
 app = Flask(
@@ -22,6 +22,7 @@ def error_response_on_exception(func):
             return func(*args, **kwargs)
         except twapi.TwAPIRateLimited as ex:
             traceback.print_exc()
+            get_logger().exception(ex)
             return Response(
                 json.dumps({
                     "error": "Too many requests. Rate limited.",
@@ -30,6 +31,7 @@ def error_response_on_exception(func):
                 status=429)
         except Exception as ex:
             traceback.print_exc()
+            get_logger().exception(ex)
             return Response(
                 json.dumps({
                     "error": "Type: {}\nError: {}".format(type(ex), str(ex)),
@@ -179,4 +181,5 @@ def get_youtube_url_from_tweet(tweet: dict) -> Optional[str]:
 
 
 if __name__ == "__main__":
+    init_logger()
     app.run()
